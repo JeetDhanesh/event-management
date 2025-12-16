@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +45,26 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relationship: A user (Client) can create many events
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    // Relationship: A user (Attendee) can have many bookings
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    // --- Helper Methods for Roles ---
+    public function isAdmin() {
+        return $this->role === 'admin';
+    }
+
+    public function isClient() {
+        return $this->role === 'client';
     }
 }
